@@ -25,6 +25,12 @@ open class RequestModel: Codable {
     open var dataResponse: Data?
     open var errorClientDescription: String?
     open var duration: Double?
+    var responseDate:Date? {
+        guard let duration = duration else {
+            return nil
+        }
+        return date.addingTimeInterval(duration)
+    }
     
     init(request: NSURLRequest, session: URLSession?) {
         id = UUID().uuidString

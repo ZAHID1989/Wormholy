@@ -15,8 +15,8 @@ class WHNavigationController: UINavigationController {
         
         //Large titles
         if #available(iOS 11.0, *) {
-            navigationBar.prefersLargeTitles = true
-            navigationItem.largeTitleDisplayMode = .automatic
+            navigationBar.prefersLargeTitles = false
+            navigationItem.largeTitleDisplayMode = .never
         }
         
         // Appearance

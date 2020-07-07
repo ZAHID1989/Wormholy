@@ -1,45 +1,59 @@
 //
-//  RequestDetailViewController.swift
+//  RequestOverviewViewController.swift
 //  Wormholy-iOS
 //
-//  Created by Paolo Musolino on 15/04/18.
-//  Copyright © 2018 Wormholy. All rights reserved.
+//  Created by Mirzohidbek on 6/29/20.
+//  Copyright © 2020 Wormholy. All rights reserved.
 //
 
 import UIKit
 
-class RequestDetailViewController: WHBaseViewController {
+class RequestOverviewViewController: WHBaseViewController {
     
     @IBOutlet weak var tableView: WHTableView!
-    
+//    init(request:RequestModel) {
+//        self.request = request
+//        super.init(nibName: nil, bundle: nil)
+//    }
     var request: RequestModel?
     var sections: [Section] = [
-        Section(name: "Overview", type: .overview),
-        Section(name: "Request Header", type: .requestHeader),
-        Section(name: "Request Body", type: .requestBody),
-        Section(name: "Response Header", type: .responseHeader),
-        Section(name: "Response Body", type: .responseBody)
+        Section(name: "Main", type: .overview),
+        Section(name: "Time", type: .requestHeader),
+        Section(name: "Size", type: .requestBody),
+//        Section(name: "Response Header", type: .responseHeader),
+//        Section(name: "Response Body", type: .responseBody)
     ]
+    
+    var labelTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return .label
+        } else {
+            return .black
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let urlString = request?.url{
-            title = URL(string: urlString)?.path
-        }
-        
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(openActionSheet(_:)))
-        navigationItem.rightBarButtonItems = [shareButton]
-        
+        reloadNavigation()
         tableView.estimatedRowHeight = 100.0
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(UINib(nibName: "TextTableViewCell", bundle:WHBundle.getBundle()), forCellReuseIdentifier: "TextTableViewCell")
-        tableView.register(UINib(nibName: "ActionableTableViewCell", bundle:WHBundle.getBundle()), forCellReuseIdentifier: "ActionableTableViewCell")
-        tableView.register(UINib(nibName: "RequestTitleSectionView", bundle:WHBundle.getBundle()), forHeaderFooterViewReuseIdentifier: "RequestTitleSectionView")
+         tableView.register(UINib(nibName: "RequestTitleSectionView", bundle:WHBundle.getBundle()), forHeaderFooterViewReuseIdentifier: "RequestTitleSectionView")
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    private func reloadNavigation() {
+        navigationItem.title = "Overview"
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(openActionSheet(_:)))
+        navigationItem.leftBarButtonItem = .init(title: "< Back", style: .plain, target: self, action: #selector(backClicked))
+        navigationItem.rightBarButtonItems = [shareButton]
+    }
+    
+    @objc private func backClicked() {
+        tabBarController?.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Actions
@@ -78,11 +92,9 @@ class RequestDetailViewController: WHBaseViewController {
             self.show(requestDetailVC, sender: self)
         }
     }
-    
 }
 
-
-extension RequestDetailViewController: UITableViewDataSource{
+extension RequestOverviewViewController: UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -112,20 +124,14 @@ extension RequestDetailViewController: UITableViewDataSource{
                 return cell
             case .requestHeader:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TextTableViewCell", for: indexPath) as! TextTableViewCell
-                cell.textView.attributedText = RequestModelBeautifier.header(req.headers).chageTextColor(to: labelTextColor)
+                cell.textView.attributedText = RequestModelBeautifier.time(request: req).chageTextColor(to: labelTextColor)
                 return cell
             case .requestBody:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ActionableTableViewCell", for: indexPath) as! ActionableTableViewCell
-                cell.labelAction?.text = "View body"
-                return cell
-            case .responseHeader:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TextTableViewCell", for: indexPath) as! TextTableViewCell
-                cell.textView.attributedText = RequestModelBeautifier.header(req.responseHeaders).chageTextColor(to: labelTextColor)
+                cell.textView.attributedText = RequestModelBeautifier.size(request: req).chageTextColor(to: labelTextColor)
                 return cell
-            case .responseBody:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ActionableTableViewCell", for: indexPath) as! ActionableTableViewCell
-                cell.labelAction?.text = "View body"
-                return cell
+            default:
+                return UITableViewCell()
             }
         }
         
@@ -134,19 +140,19 @@ extension RequestDetailViewController: UITableViewDataSource{
     
 }
 
-extension RequestDetailViewController: UITableViewDelegate{
+extension RequestOverviewViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sections[indexPath.section]
+//        let section = sections[indexPath.section]
         
-        switch section.type {
-        case .requestBody:
-            openBodyDetailVC(title: "Request Body", body: request?.httpBody)
-            break
-        case .responseBody:
-            openBodyDetailVC(title: "Response Body", body: request?.dataResponse)
-            break
-        default:
-            break
-        }
+//        switch section.type {
+//        case .requestBody:
+//            openBodyDetailVC(title: "Request Body", body: request?.httpBody)
+//            break
+//        case .responseBody:
+//            openBodyDetailVC(title: "Response Body", body: request?.dataResponse)
+//            break
+//        default:
+//            break
+//        }
     }
 }

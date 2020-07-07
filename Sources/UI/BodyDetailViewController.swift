@@ -21,6 +21,8 @@ class BodyDetailViewController: WHBaseViewController {
     var searchController: UISearchController?
     var highlightedWords: [NSTextCheckingResult] = []
     var data: Data?
+    var header:NSAttributedString?
+    var isRequest:Bool = true
     var indexOfWord: Int = 0
 
     deinit {
@@ -29,36 +31,54 @@ class BodyDetailViewController: WHBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(BodyDetailViewController.handleKeyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(BodyDetailViewController.handleKeyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         textView.font = UIFont(name: "Courier", size: 14)
         textView.dataDetectorTypes = UIDataDetectorTypes.link
 
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareContent(_:)))
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearch))
-        navigationItem.rightBarButtonItems = [searchButton, shareButton]
-
         buttonPrevious.isEnabled = false
         buttonNext.isEnabled = false
         addSearchController()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
         let hud = showLoader(view: view)
         RequestModelBeautifier.body(data) { [weak self] (stringData) in
             let formattedJSON = stringData
             DispatchQueue.main.sync {
-                self?.textView.text = formattedJSON
+                self?.textView.text = "Header\n" + (self?.header?.string ?? "-") + "\nBody\n" + formattedJSON
                 self?.hideLoader(loaderView: hud)
             }
         }
+        reloadNavigation()
+        animationInputView(with: 0, notification: nil)
+    }
+    
+    private func reloadNavigation() {
+        if isRequest {
+            navigationItem.title = "Request"
+        } else {
+            navigationItem.title = "Response"
+        }
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareContent(_:)))
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearch))
+        
+        navigationItem.rightBarButtonItems = [searchButton, shareButton]
+        navigationItem.leftBarButtonItem = .init(title: "< Back", style: .plain, target: self, action: #selector(backClicked))
+    }
+    
+    @objc private func backClicked() {
+        tabBarController?.navigationController?.popViewController(animated: true)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        reloadNavigation()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -144,10 +164,11 @@ class BodyDetailViewController: WHBaseViewController {
 
     @objc func showSearch() {
         searchController?.isActive = true
+        searchController?.searchBar.becomeFirstResponder()
     }
 
     // MARK: - Keyboard
-
+    let kToolbarHeight:CGFloat = 50
     @objc func handleKeyboardWillShow(_ sender: NSNotification) {
         guard let keyboardSize = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size else { return }
 
@@ -155,18 +176,18 @@ class BodyDetailViewController: WHBaseViewController {
     }
 
     @objc func handleKeyboardWillHide(_ sender: NSNotification) {
-        animationInputView(with: 0.0, notification: sender)
+        animationInputView(with: -kToolbarHeight, notification: sender)
     }
 
-    func animationInputView(with height: CGFloat, notification: NSNotification) {
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber
-        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
-
-        self.bottomViewInputConstraint.constant = height
-
-        UIView.animate(withDuration: duration?.doubleValue ?? 0.0, delay: 0.0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue((curve?.intValue)!)), animations: {
-            self.view.layoutIfNeeded()
-        })
+    func animationInputView(with height: CGFloat, notification: NSNotification?) {
+        self.bottomViewInputConstraint.constant = height + kToolbarHeight
+        if let notification = notification {
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+            UIView.animate(withDuration: duration?.doubleValue ?? 0.0, delay: 0.0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue((curve?.intValue)!)), animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
     }
 
     /*
@@ -183,8 +204,8 @@ class BodyDetailViewController: WHBaseViewController {
 
 extension BodyDetailViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        if searchController.searchBar.text?.isEmpty == false {
-            performSearch(text: searchController.searchBar.text)
+        if let text = searchController.searchBar.text, text.count >= 2 {//searchController.searchBar.text?.isEmpty == false
+            performSearch(text: text)
         }
         else {
             resetSearchText()
@@ -195,6 +216,12 @@ extension BodyDetailViewController: UISearchResultsUpdating {
 extension BodyDetailViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+//        searchBar.inputAccessoryView = UIView()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        animationInputView(with: 0, notification: nil)
     }
 }
 
@@ -204,6 +231,7 @@ extension BodyDetailViewController {
             attributedString.addAttribute(.backgroundColor, value: UIColor.clear, range: NSRange(location: 0, length: self.textView.attributedText.length))
             attributedString.addAttribute(.font, value: UIFont(name: "Courier", size: 14)!, range: NSRange(location: 0, length: self.textView.attributedText.length))
 
+        
         self.textView.attributedText = attributedString
         self.labelWordFinded.text = "0 of 0"
         self.buttonPrevious.isEnabled = false

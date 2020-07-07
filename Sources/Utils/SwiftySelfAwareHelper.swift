@@ -34,6 +34,7 @@ struct CustomSelfAwareHelper {
 // The class used by StarterEnginer (objc) to start all the process.
 class StarterEngine: NSObject {
     @objc static func appWillLaunch(_: Notification) {
+        
         CustomSelfAwareHelper.harmlessFunction()
     }
 }

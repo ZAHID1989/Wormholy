@@ -34,6 +34,11 @@ class RequestsViewController: WHBaseViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -120,11 +125,15 @@ class RequestsViewController: WHBaseViewController {
     }
     
     func openRequestDetailVC(request: RequestModel){
-        let storyboard = UIStoryboard(name: "Flow", bundle: WHBundle.getBundle())
-        if let requestDetailVC = storyboard.instantiateViewController(withIdentifier: "RequestDetailViewController") as? RequestDetailViewController{
-            requestDetailVC.request = request
-            self.show(requestDetailVC, sender: self)
-        }
+        
+        let ctrl = RequestDetailTabbarController(request: request)
+        self.show(ctrl, sender: self)
+        
+//        let storyboard = UIStoryboard(name: "Flow", bundle: WHBundle.getBundle())
+//        if let requestDetailVC = storyboard.instantiateViewController(withIdentifier: "RequestDetailViewController") as? RequestDetailViewController{
+//            requestDetailVC.request = request
+//            self.show(requestDetailVC, sender: self)
+//        }
     }
     
     deinit {

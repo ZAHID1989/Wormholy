@@ -14,10 +14,38 @@ class RequestModelBeautifier: NSObject {
         let url = NSMutableAttributedString().bold("URL ").normal(request.url + "\n")
         let method = NSMutableAttributedString().bold("Method ").normal(request.method + "\n")
         let responseCode = NSMutableAttributedString().bold("Response Code ").normal((request.code != 0 ? "\(request.code)" : "-") + "\n")
-        let requestStartTime = NSMutableAttributedString().bold("Request Start Time ").normal((request.date.stringWithFormat(dateFormat: "MMM d yyyy - HH:mm:ss") ?? "-") + "\n")
-        let duration = NSMutableAttributedString().bold("Duration ").normal(request.duration?.formattedMilliseconds() ?? "-" + "\n")
+//        let requestStartTime = NSMutableAttributedString().bold("Request Start Time ").normal((request.date.stringWithFormat(dateFormat: "MMM d yyyy - HH:mm:ss") ?? "-") + "\n")
+//        let duration = NSMutableAttributedString().bold("Duration ").normal(request.duration?.formattedMilliseconds() ?? "-")
         let final = NSMutableAttributedString()
-        for attr in [url, method, responseCode, requestStartTime, duration]{
+        for attr in [url, method, responseCode]{
+            final.append(attr)
+        }
+        return final
+    }
+    
+    static func time(request: RequestModel) -> NSMutableAttributedString{
+        let requestStartTime = NSMutableAttributedString().bold("Request Start Time ").normal((request.date.stringWithFormat(dateFormat: "MMM d yyyy - HH:mm:ss") ?? "-") + "\n")
+        let responseTime = NSMutableAttributedString().bold("Response Time ").normal((request.responseDate?.stringWithFormat(dateFormat: "MMM d yyyy - HH:mm:ss") ?? "-") + "\n")
+        let duration = NSMutableAttributedString().bold("Duration ").normal(request.duration?.formattedMilliseconds() ?? "-")
+        let final = NSMutableAttributedString()
+        for attr in [requestStartTime, responseTime, duration]{
+            final.append(attr)
+        }
+        return final
+    }
+    
+    
+    static func size(request: RequestModel) -> NSMutableAttributedString{
+        let byteFormatter:ByteCountFormatter = ByteCountFormatter()
+        byteFormatter.allowedUnits = [.useAll]
+        let reqSize = Int64(request.httpBody?.count ?? 10000000)
+        let requestSize = NSMutableAttributedString().bold("Request size ").normal((byteFormatter.string(fromByteCount: reqSize)) + "\n")
+        let resSize = Int64(request.dataResponse?.count ?? 10000)
+        let responseSize = NSMutableAttributedString().bold("Response Time ").normal((byteFormatter.string(fromByteCount: resSize)) + "\n")
+        let totalSize = NSMutableAttributedString().bold("Total size ").normal((byteFormatter.string(fromByteCount: resSize + reqSize)) + "\n")
+      
+        let final = NSMutableAttributedString()
+        for attr in [requestSize, responseSize, totalSize]{
             final.append(attr)
         }
         return final
@@ -130,5 +158,27 @@ extension String {
             let formattedJSON = String(data: jsonData, encoding: .utf8) else { return nil }
 
         return formattedJSON.replacingOccurrences(of: "\\/", with: "/")
+    }
+    
+    func javaScriptEscapedString() -> String {
+        
+            // Because JSON is not a subset of JavaScript, the LINE_SEPARATOR and PARAGRAPH_SEPARATOR unicode
+        // characters embedded in (valid) JSON will cause the webview's JavaScript parser to error. So we
+        // must encode them first. See here: http://timelessrepo.com/json-isnt-a-javascript-subset
+        // Also here: http://media.giphy.com/media/wloGlwOXKijy8/giphy.gif
+        
+        var str = self.replacingOccurrences(of: "\n", with: "<br>")
+         str = str.replacingOccurrences(of: "\u{2028}", with: "\\u2028")
+        str = str.replacingOccurrences(of: "\u{2029}", with: "\\u2029")
+                
+        //        oldText.replace(/(<br\s*\/?>){3,}/gi, '<br>');
+        
+        //            self.stringByReplacingOccurrencesOfString("\u{2028}", withString: "\\u2028")
+        //.stringByReplacingOccurrencesOfString("\u{2029}", withString: "\\u2029")
+        // Because escaping JavaScript is a non-trivial task (https://github.com/johnezang/JSONKit/blob/master/JSONKit.m#L1423)
+        // we proceed to hax instead:
+        let data = try! JSONSerialization.data(withJSONObject: [str], options: [])
+        let encodedString = NSString(data: data, encoding: String.Encoding.utf8.rawValue)!
+        return encodedString.substring(with: NSMakeRange(1, encodedString.length - 2))
     }
 }

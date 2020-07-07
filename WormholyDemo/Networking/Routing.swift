@@ -46,7 +46,7 @@ enum Routing{
         guard dataToSend != nil else{
             return nil
         }
-        do{
+        do {
             if JSONSerialization.isValidJSONObject(dataToSend! as NSDictionary){
                 
                 let json = try JSONSerialization.data(withJSONObject: dataToSend! as NSDictionary, options: JSONSerialization.WritingOptions.prettyPrinted)

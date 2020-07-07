@@ -8,6 +8,14 @@
 
 import UIKit
 
+var labelTextColor: UIColor {
+    if #available(iOS 13.0, *) {
+        return .label
+    } else {
+        return .black
+    }
+}
+
 class WHBaseViewController: UIViewController {
     
     override func viewDidLoad() {

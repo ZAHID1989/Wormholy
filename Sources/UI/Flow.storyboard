@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -60,51 +60,11 @@
                     <navigationItem key="navigationItem" title="Requests" id="0te-N4-NBT"/>
                     <connections>
                         <outlet property="collectionView" destination="v4V-Us-h8K" id="gOb-1m-oHE"/>
-                        <segue destination="oCq-W9-inr" kind="show" identifier="showRequestDetailVC" id="CHW-0s-7Ks"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uo5-0K-pSr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="301.60000000000002" y="147.97601199400302"/>
-        </scene>
-        <!--Request Detail View Controller-->
-        <scene sceneID="JaV-AO-yRE">
-            <objects>
-                <viewController storyboardIdentifier="RequestDetailViewController" automaticallyAdjustsScrollViewInsets="NO" id="oCq-W9-inr" customClass="RequestDetailViewController" customModule="Wormholy" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dxP-Gd-tGS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="C1R-oy-f7k" customClass="WHTableView" customModule="Wormholy" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="7BC-LK-4id">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </view>
-                                <connections>
-                                    <outlet property="dataSource" destination="oCq-W9-inr" id="Z6M-JZ-roo"/>
-                                    <outlet property="delegate" destination="oCq-W9-inr" id="Bfm-Lj-QfA"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="C1R-oy-f7k" firstAttribute="top" secondItem="f1w-um-ttt" secondAttribute="top" id="8TE-0v-S2s"/>
-                            <constraint firstItem="f1w-um-ttt" firstAttribute="bottom" secondItem="C1R-oy-f7k" secondAttribute="bottom" id="Qr3-Yj-aUX"/>
-                            <constraint firstItem="C1R-oy-f7k" firstAttribute="leading" secondItem="f1w-um-ttt" secondAttribute="leading" id="qBv-zw-PIG"/>
-                            <constraint firstItem="f1w-um-ttt" firstAttribute="trailing" secondItem="C1R-oy-f7k" secondAttribute="trailing" id="z7M-h8-ReO"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="f1w-um-ttt"/>
-                    </view>
-                    <connections>
-                        <outlet property="tableView" destination="C1R-oy-f7k" id="jHN-Zy-hHn"/>
-                        <segue destination="S40-LP-XSy" kind="show" identifier="showBodyDetailVC" id="w0J-H9-db9"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jrn-OG-d87" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1100" y="148"/>
         </scene>
         <!--Body Detail View Controller-->
         <scene sceneID="FPQ-PL-XiD">
@@ -115,7 +75,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fpK-qH-d5h" customClass="WHTextView" customModule="Wormholy" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="375" height="579"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -182,7 +142,45 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BEJ-Hi-Vka" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1944.8" y="147.97601199400302"/>
+            <point key="canvasLocation" x="2148" y="148"/>
+        </scene>
+        <!--Request Overview View Controller-->
+        <scene sceneID="p46-Fi-SM0">
+            <objects>
+                <viewController storyboardIdentifier="RequestOverviewViewController" id="0SX-gr-pcr" customClass="RequestOverviewViewController" customModule="Wormholy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wqb-D9-QCd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0Vu-kH-kun" customClass="WHTableView" customModule="Wormholy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="jeI-k4-y2o">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </view>
+                                <connections>
+                                    <outlet property="dataSource" destination="0SX-gr-pcr" id="Oba-xR-Oj9"/>
+                                    <outlet property="delegate" destination="0SX-gr-pcr" id="wbL-uC-8o1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="0Vu-kH-kun" firstAttribute="leading" secondItem="4M1-Ef-jaM" secondAttribute="leading" id="00O-DB-5dp"/>
+                            <constraint firstItem="0Vu-kH-kun" firstAttribute="top" secondItem="4M1-Ef-jaM" secondAttribute="top" id="MbT-Zu-UNu"/>
+                            <constraint firstItem="0Vu-kH-kun" firstAttribute="bottom" secondItem="4M1-Ef-jaM" secondAttribute="bottom" id="NpD-zM-1qJ"/>
+                            <constraint firstItem="0Vu-kH-kun" firstAttribute="centerX" secondItem="Wqb-D9-QCd" secondAttribute="centerX" id="b8X-S3-AJc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4M1-Ef-jaM"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="0Vu-kH-kun" id="97T-2O-02j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8rQ-5J-LkB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-575" y="877"/>
         </scene>
     </scenes>
 </document>
