@@ -18,24 +18,53 @@ public class Wormholy: NSObject
 
     @objc public static func swiftyLoad() {
         NotificationCenter.default.addObserver(forName: fireWormholy, object: nil, queue: nil) { (notification) in
-            Wormholy.presentWormholyFlow()
+            if Wormholy.enabled {
+                Wormholy.presentWormholyFlow()
+            }
         }
     }
     
     @objc public static func swiftyInitialize() {
         if self == Wormholy.self{
-            Wormholy.enable(true)
+//            Wormholy.enabled = true
+            startWork()
         }
     }
     
-    static func enable(_ enable: Bool){
-        if enable{
-            URLProtocol.registerClass(CustomHTTPProtocol.self)
+    public static var enabled:Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "Wormholy.IsEnabled")
         }
-        else{
-            URLProtocol.unregisterClass(CustomHTTPProtocol.self)
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: "Wormholy.IsEnabled")
+            if newValue {
+                startWork()
+            } else {
+                endWork()
+            }
         }
     }
+    
+    private static func startWork() {
+        URLProtocol.registerClass(CustomHTTPProtocol.self)
+    }
+    
+    
+    private static func endWork() {
+        URLProtocol.unregisterClass(CustomHTTPProtocol.self)
+    }
+    
+    
+    
+//    @objc public static func enable(_ enable: Bool){
+//        if enable{
+//            URLProtocol.registerClass(CustomHTTPProtocol.self)
+//        }
+//        else{
+//            URLProtocol.unregisterClass(CustomHTTPProtocol.self)
+//        }
+//    }
     
     @objc public static func enable(_ enable: Bool, sessionConfiguration: URLSessionConfiguration){
         
