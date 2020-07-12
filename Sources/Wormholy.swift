@@ -9,11 +9,25 @@
 import Foundation
 import UIKit
 
-public class Wormholy: NSObject
+@objc public enum RequestFilterType:Int {
+    case all = 1, onlyWhiteList, exceptBlacklist
+}
+
+@objc public class Wormholy: NSObject
 {
     @objc public static var blacklistedHosts: [String] {
         get { return CustomHTTPProtocol.blacklistedHosts }
         set { CustomHTTPProtocol.blacklistedHosts = newValue }
+    }
+    
+    @objc public static var whiteListedHosts: [String] {
+        get { return CustomHTTPProtocol.whiteListHosts }
+        set { CustomHTTPProtocol.whiteListHosts = newValue }
+    }
+    
+    @objc public static var filterType: RequestFilterType {
+        get { return CustomHTTPProtocol.filterType }
+        set { CustomHTTPProtocol.filterType = newValue }
     }
 
     @objc public static func swiftyLoad() {
@@ -31,7 +45,7 @@ public class Wormholy: NSObject
         }
     }
     
-    public static var enabled:Bool {
+    @objc public static var enabled:Bool {
         get {
             return UserDefaults.standard.bool(forKey: "Wormholy.IsEnabled")
         }

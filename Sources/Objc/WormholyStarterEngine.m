@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <Wormholy/Wormholy.h>
 
 @interface WormholyStarterEngine : NSObject
 
