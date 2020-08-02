@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XiN-zk-JTq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XiN-zk-JTq">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -181,6 +181,81 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8rQ-5J-LkB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-575" y="877"/>
+        </scene>
+        <!--Filter View Controller-->
+        <scene sceneID="xiJ-KJ-26c">
+            <objects>
+                <viewController storyboardIdentifier="FilterViewController" id="cah-il-3t3" customClass="FilterViewController" customModule="Wormholy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="F3M-yF-S8c">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gw0-Dp-pkA">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="75.5"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Fxg-wg-KSR" propertyAccessControl="none">
+                                        <rect key="frame" x="8" y="9" width="359" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="31" id="jW8-te-9Ub"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="All"/>
+                                            <segment title="Only Whitelist"/>
+                                            <segment title="Except Blacklist"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="segmentChanged" destination="cah-il-3t3" eventType="valueChanged" id="acx-1c-UEX"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All requests will be show." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7j-JA-nf9">
+                                        <rect key="frame" x="8" y="55" width="359" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="Fxg-wg-KSR" firstAttribute="leading" secondItem="O7j-JA-nf9" secondAttribute="leading" id="B9P-sh-xkh"/>
+                                    <constraint firstAttribute="bottom" secondItem="O7j-JA-nf9" secondAttribute="bottom" id="HNM-b5-eOP"/>
+                                    <constraint firstItem="Fxg-wg-KSR" firstAttribute="trailing" secondItem="Gw0-Dp-pkA" secondAttribute="trailingMargin" id="HWP-cN-6Gb"/>
+                                    <constraint firstItem="Fxg-wg-KSR" firstAttribute="trailing" secondItem="O7j-JA-nf9" secondAttribute="trailing" id="ZbN-rJ-teO"/>
+                                    <constraint firstItem="Fxg-wg-KSR" firstAttribute="leading" secondItem="Gw0-Dp-pkA" secondAttribute="leadingMargin" id="buP-j7-4kg"/>
+                                    <constraint firstItem="O7j-JA-nf9" firstAttribute="top" secondItem="Fxg-wg-KSR" secondAttribute="bottom" constant="15" id="oJF-rI-VvH"/>
+                                    <constraint firstItem="Fxg-wg-KSR" firstAttribute="top" secondItem="Gw0-Dp-pkA" secondAttribute="top" constant="9" id="r2h-7w-atR"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="cO1-tp-fo6" customClass="WHTableView" customModule="Wormholy" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="83.5" width="375" height="583.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="sectionIndexBackgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="cah-il-3t3" id="KS3-iv-Z76"/>
+                                    <outlet property="delegate" destination="cah-il-3t3" id="G41-9B-Cpf"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Gw0-Dp-pkA" firstAttribute="trailing" secondItem="cO1-tp-fo6" secondAttribute="trailing" id="KEP-2J-sOS"/>
+                            <constraint firstItem="Gw0-Dp-pkA" firstAttribute="centerX" secondItem="F3M-yF-S8c" secondAttribute="centerX" id="SNb-qo-g49"/>
+                            <constraint firstItem="Gw0-Dp-pkA" firstAttribute="leading" secondItem="cO1-tp-fo6" secondAttribute="leading" id="a4Z-Mh-niu"/>
+                            <constraint firstItem="Gw0-Dp-pkA" firstAttribute="leading" secondItem="had-RM-CHa" secondAttribute="leading" id="cdf-fG-qLF"/>
+                            <constraint firstItem="cO1-tp-fo6" firstAttribute="bottom" secondItem="had-RM-CHa" secondAttribute="bottom" id="fVT-YM-KaC"/>
+                            <constraint firstItem="Gw0-Dp-pkA" firstAttribute="top" secondItem="had-RM-CHa" secondAttribute="top" id="jmt-YK-F9d"/>
+                            <constraint firstItem="cO1-tp-fo6" firstAttribute="top" secondItem="Gw0-Dp-pkA" secondAttribute="bottom" constant="8" id="lOa-tJ-kNm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="had-RM-CHa"/>
+                    </view>
+                    <connections>
+                        <outlet property="detailLabel" destination="O7j-JA-nf9" id="Owd-GJ-xKc"/>
+                        <outlet property="segmentView" destination="Fxg-wg-KSR" id="das-4f-hn3"/>
+                        <outlet property="tableView" destination="cO1-tp-fo6" id="Mos-Kh-n1E"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ceg-C3-dek" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3088.8000000000002" y="113.79310344827587"/>
         </scene>
     </scenes>
 </document>

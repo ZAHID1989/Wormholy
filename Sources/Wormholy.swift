@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @objc public enum RequestFilterType:Int {
-    case all = 1, onlyWhiteList, exceptBlacklist
+    case all = 0, onlyWhiteList, exceptBlacklist
 }
 
 @objc public class Wormholy: NSObject

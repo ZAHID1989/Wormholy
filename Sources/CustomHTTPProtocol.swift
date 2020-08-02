@@ -55,6 +55,7 @@ public class CustomHTTPProtocol: URLProtocol {
         sessionTask?.cancel()
         currentRequest?.httpBody = body(from: request)
         if let startDate = currentRequest?.date{
+            currentRequest?.responseDate = Date()
             currentRequest?.duration = fabs(startDate.timeIntervalSinceNow) * 1000 //Find elapsed time and convert to milliseconds
         }
 

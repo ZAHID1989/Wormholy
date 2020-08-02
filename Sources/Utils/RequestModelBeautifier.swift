@@ -38,9 +38,9 @@ class RequestModelBeautifier: NSObject {
     static func size(request: RequestModel) -> NSMutableAttributedString{
         let byteFormatter:ByteCountFormatter = ByteCountFormatter()
         byteFormatter.allowedUnits = [.useAll]
-        let reqSize = Int64(request.httpBody?.count ?? 10000000)
+        let reqSize = Int64(request.httpBody?.count ?? 0)
         let requestSize = NSMutableAttributedString().bold("Request size ").normal((byteFormatter.string(fromByteCount: reqSize)) + "\n")
-        let resSize = Int64(request.dataResponse?.count ?? 10000)
+        let resSize = Int64(request.dataResponse?.count ?? 0)
         let responseSize = NSMutableAttributedString().bold("Response Time ").normal((byteFormatter.string(fromByteCount: resSize)) + "\n")
         let totalSize = NSMutableAttributedString().bold("Total size ").normal((byteFormatter.string(fromByteCount: resSize + reqSize)) + "\n")
       

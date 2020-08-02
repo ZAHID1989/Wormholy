@@ -101,6 +101,9 @@ class RequestsViewController: WHBaseViewController {
         ac.addAction(UIAlertAction(title: "Share as Postman Collection", style: .default) { [weak self] (action) in
                    self?.shareContent(sender, requestExportOption: .postman)
                })
+        ac.addAction(UIAlertAction(title: "Filter Requests", style: .default) { [weak self] (action) in
+            self?.showFilter()
+        })
         ac.addAction(UIAlertAction(title: "Close", style: .cancel) { (action) in
         })
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -119,6 +122,15 @@ class RequestsViewController: WHBaseViewController {
         ShareUtils.shareRequests(presentingViewController: self, sender: sender, requests: filteredRequests, requestExportOption: requestExportOption)
     }
     
+    func showFilter(){
+        let storyboard = UIStoryboard(name: "Flow", bundle: WHBundle.getBundle())
+        guard let ctrl = storyboard.instantiateViewController(withIdentifier: "FilterViewController") as? FilterViewController else {
+            return
+        }
+        let navCtrl = UINavigationController(rootViewController: ctrl)
+        self.present(navCtrl, animated: true, completion: nil)
+    }
+    
     // MARK: - Navigation
     @objc func done(){
         self.dismiss(animated: true, completion: nil)
@@ -127,7 +139,8 @@ class RequestsViewController: WHBaseViewController {
     func openRequestDetailVC(request: RequestModel){
         
         let ctrl = RequestDetailTabbarController(request: request)
-        self.show(ctrl, sender: self)
+        navigationController?.pushViewController(ctrl, animated: true)
+//        self.show(ctrl, sender: self)
         
 //        let storyboard = UIStoryboard(name: "Flow", bundle: WHBundle.getBundle())
 //        if let requestDetailVC = storyboard.instantiateViewController(withIdentifier: "RequestDetailViewController") as? RequestDetailViewController{
