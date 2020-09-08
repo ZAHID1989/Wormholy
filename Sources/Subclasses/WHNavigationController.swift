@@ -12,7 +12,7 @@ class WHNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.barStyle = .black
+        navigationBar.barStyle = .default
         //Large titles
         if #available(iOS 11.0, *) {
             navigationBar.prefersLargeTitles = false
