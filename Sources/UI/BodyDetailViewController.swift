@@ -56,6 +56,7 @@ class BodyDetailViewController: WHBaseViewController {
     }
     
     private func reloadNavigation() {
+        
         if isRequest {
             navigationItem.title = "Request"
         } else {
@@ -65,7 +66,13 @@ class BodyDetailViewController: WHBaseViewController {
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearch))
         
         navigationItem.rightBarButtonItems = [searchButton, shareButton]
-        navigationItem.leftBarButtonItem = .init(title: "< Back", style: .plain, target: self, action: #selector(backClicked))
+//        let btn = UIButton(frame: .init(x: 0, y: 0, width: 65, height: 40))
+//        btn.setImage(UIImage(named: "backArrow", in: WHBundle.getBundle(), compatibleWith: nil), for: .normal)
+//        btn.tintColor = .black
+//        btn.setTitle("Back", for: .normal)
+//        btn.setTitleColor(.black, for: .normal)
+//        btn.addTarget(self, action: #selector(backClicked), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = .init(title: "Back", style: .plain, target: self, action: #selector(backClicked))
     }
     
     @objc private func backClicked() {

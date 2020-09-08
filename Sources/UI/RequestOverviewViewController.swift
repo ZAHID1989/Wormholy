@@ -48,7 +48,7 @@ class RequestOverviewViewController: WHBaseViewController {
     private func reloadNavigation() {
         navigationItem.title = "Overview"
         let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(openActionSheet(_:)))
-        navigationItem.leftBarButtonItem = .init(title: "< Back", style: .plain, target: self, action: #selector(backClicked))
+        navigationItem.leftBarButtonItem = .init(title: "Back", style: .plain, target: self, action: #selector(backClicked))
         navigationItem.rightBarButtonItems = [shareButton]
     }
     

@@ -12,6 +12,11 @@ open class Storage: NSObject {
 
     public static let shared: Storage = Storage()
     
+    override init() {
+        super.init()
+        
+    }
+    
     open var requests: [RequestModel] = []
     
     func saveRequest(request: RequestModel?){
@@ -31,5 +36,34 @@ open class Storage: NSObject {
 
     func clearRequests() {
         requests.removeAll()
+    }
+}
+private let kKey = "savedRequests";
+class RequestModelList: Codable {
+    let requests: [RequestModel]?
+    
+    
+    func save() {
+        do {
+            let encoded = try JSONEncoder().encode(self)
+            UserDefaults.standard.set(encoded, forKey: kKey)
+            UserDefaults.standard.synchronize()
+//            UserDefaults.setObject(object: encoded, forKey: kKey)
+        } catch {
+            print("Error save User info: \(error)")
+        }
+    }
+    
+    class func load()->[RequestModel]? {
+        if let data = UserDefaults.standard.value(forKey: kKey) as? Data {
+            do {
+                let requests = try JSONDecoder().decode([RequestModel].self, from: data)
+                return requests
+            } catch {
+                print("Error loading User info: \(error)")
+                return nil
+            }
+        }
+        return nil
     }
 }
