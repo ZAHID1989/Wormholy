@@ -101,9 +101,9 @@ class RequestsViewController: WHBaseViewController {
         ac.addAction(UIAlertAction(title: "Share as Postman Collection", style: .default) { [weak self] (action) in
                    self?.shareContent(sender, requestExportOption: .postman)
                })
-        ac.addAction(UIAlertAction(title: "Filter Requests", style: .default) { [weak self] (action) in
-            self?.showFilter()
-        })
+//        ac.addAction(UIAlertAction(title: "Filter Requests", style: .default) { [weak self] (action) in
+//            self?.showFilter()
+//        })
         ac.addAction(UIAlertAction(title: "Close", style: .cancel) { (action) in
         })
         if UIDevice.current.userInterfaceIdiom == .pad {
