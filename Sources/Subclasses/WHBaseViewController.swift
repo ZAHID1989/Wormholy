@@ -26,6 +26,9 @@ class WHBaseViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // MARK: - Loader
     func showLoader(view: UIView) -> UIView{
