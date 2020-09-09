@@ -57,6 +57,7 @@ import UIKit
             } else {
                 endWork()
             }
+            UserDefaults.standard.synchronize()
         }
     }
     
