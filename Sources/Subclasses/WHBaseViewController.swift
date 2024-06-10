@@ -66,7 +66,7 @@ extension UIViewController{
     
     open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         //Shake shake
-        if motion == .motionShake && Wormholy.shakeEnabled {
+        if motion == .motionShake && Wormholy.shakeEnabled && UserDefaults.standard.bool(forKey: "ShouldStartWormholy") {
             NotificationCenter.default.post(name: fireWormholy, object: nil)
         }
         
