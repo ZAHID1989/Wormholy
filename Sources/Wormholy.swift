@@ -28,6 +28,19 @@ public class Wormholy: NSObject
         }
     }
     
+    @objc public static var shouldStartInApp: Bool {
+        get { return UserDefaults.standard.bool(forKey: kWormholyStartEnabled) }
+        set {
+            let oldValue = shouldStartInApp
+            UserDefaults.standard.setValue(newValue, forKey: kWormholyStartEnabled)
+            if newValue == true && oldValue == false {
+                awake()
+            } else if newValue == false {
+                Wormholy.enable(false)
+            }
+        }
+    }
+    
     static func enable(_ enable: Bool){
         if enable{
             URLProtocol.registerClass(CustomHTTPProtocol.self)
@@ -109,7 +122,11 @@ public class Wormholy: NSObject
 extension Wormholy: SelfAware {
     
     static func awake() {
-        initializeAction
+        let isEnabled = Wormholy.shouldStartInApp
+        print("Wormholy Enabled In App: ", isEnabled)
+        if isEnabled {
+            initializeAction
+        }
     }
     
     private static let initializeAction: Void = {
